@@ -14,7 +14,7 @@ public class Timetest {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			
 			Connection con=DriverManager.getConnection(url,user,Password);
-			con.setAutoCommit(true);
+			con.setAutoCommit(false);
 			Statement stt=con.createStatement();
 			long _t1, _t2, _t_result;
 			
@@ -22,6 +22,7 @@ public class Timetest {
 			
 			stt.execute("CREATE DATABASE IF NOT EXISTS StudentData");
 			stt.execute("USE StudentData");
+			con.commit();
 			
 			stt.execute("DROP TABLE IF EXISTS Students");
 			stt.execute("CREATE TABLE Students("+
@@ -31,6 +32,7 @@ public class Timetest {
 			"Address VARCHAR(50),"+
 			"PRIMARY KEY(Id)"
 					+")");
+			con.commit();
 			
 			for (int i = 0; i<5000;i++){
 				String name = r_name_generator();
@@ -39,6 +41,7 @@ public class Timetest {
 				stt.execute("INSERT INTO Students (Name,Semester,Address) VALUES" +
 							"('"+name+"','"+semester+"','Room "+i+"')");
 			}
+			con.commit();
 			
 			_t2 = System.currentTimeMillis();	
 			_t_result = _t2 - _t1;

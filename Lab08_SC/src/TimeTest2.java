@@ -14,7 +14,7 @@ public class TimeTest2{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			
 			Connection con = DriverManager.getConnection(url,user,Password);
-			con.setAutoCommit(true);
+			con.setAutoCommit(false);
 			PreparedStatement stt= null;
 			String query, insertQuery;
 			long _t1, _t2, _t_result;
@@ -32,9 +32,13 @@ public class TimeTest2{
 			stt = con.prepareStatement(query);
 			stt.execute();
 			
+			con.commit();
+			
 			query = "DROP TABLE IF EXISTS Students";
 			stt = con.prepareStatement(query);
 			stt.execute();
+			
+			con.commit();
 			
 			query = "CREATE TABLE Students("+
 					"ID BIGINT NOT NULL AUTO_INCREMENT,"+
@@ -44,7 +48,9 @@ public class TimeTest2{
 					"PRIMARY KEY(Id)"
 							+")";
 			stt = con.prepareStatement(query);
-			stt.execute();			
+			stt.execute();
+			
+			con.commit();
 
 			for (int i = 0; i<5000;i++){
 				String name = r_name_generator();
